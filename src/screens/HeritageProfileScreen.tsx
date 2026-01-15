@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import { StackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import { getHeritageSiteById } from '../data/heritageSites';
 import { animatedPortraitData } from '../data/animatedPortraitData';
+import { useApp } from '../context/AppContext';
 
 type HeritageProfileScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -28,6 +29,12 @@ const HeritageProfileScreen: React.FC<Props> = ({ route, navigation }) => {
   const { siteId } = route.params;
   const site = getHeritageSiteById(siteId);
   const hasPortrait = animatedPortraitData[siteId] !== undefined;
+  const { isFavorite, addFavorite, removeFavorite, markSiteAsVisited } = useApp();
+  const favorite = isFavorite(siteId);
+
+  useEffect(() => {
+    markSiteAsVisited(siteId);
+  }, [siteId]);
 
   if (!site) {
     return (
@@ -68,6 +75,14 @@ const HeritageProfileScreen: React.FC<Props> = ({ route, navigation }) => {
     }
   };
 
+  const handleFavoriteToggle = () => {
+    if (favorite) {
+      removeFavorite(siteId);
+    } else {
+      addFavorite(siteId);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -80,6 +95,16 @@ const HeritageProfileScreen: React.FC<Props> = ({ route, navigation }) => {
             <Text style={styles.categoryText}>
               {site.category.replace('_', ' ').toUpperCase()}
             </Text>
+            
+            <TouchableOpacity
+              style={styles.favoriteButton}
+              onPress={handleFavoriteToggle}
+            >
+              <Text style={styles.favoriteButtonText}>
+                {favorite ? '❤️ Saved' : '🤍 Save to Favorites'}
+              </Text>
+            </TouchableOpacity>
+
             {site.arAvailable && (
               <TouchableOpacity
                 style={styles.arButton}
@@ -125,13 +150,24 @@ const HeritageProfileScreen: React.FC<Props> = ({ route, navigation }) => {
           {renderTimeline()}
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Images</Text>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Photo Gallery</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('PhotoGallery', { siteId })}
+              >
+                <Text style={styles.viewAllText}>View All →</Text>
+              </TouchableOpacity>
+            </View>
             <View style={styles.imageGrid}>
-              {site.images.map((image, index) => (
-                <View key={index} style={styles.imagePlaceholder}>
+              {site.images.slice(0, 2).map((image, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.imagePlaceholder}
+                  onPress={() => navigation.navigate('PhotoGallery', { siteId })}
+                >
                   <Text style={styles.imagePlaceholderText}>🖼️</Text>
                   <Text style={styles.imageName}>{image}</Text>
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           </View>
@@ -185,6 +221,18 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 2,
   },
+  favoriteButton: {
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginTop: 8,
+  },
+  favoriteButtonText: {
+    fontSize: 14,
+    color: '#2D5A27',
+    fontWeight: 'bold',
+  },
   arButton: {
     backgroundColor: '#DEB887',
     paddingHorizontal: 24,
@@ -224,11 +272,22 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#2D5A27',
     marginBottom: 12,
+  },
+  viewAllText: {
+    fontSize: 14,
+    color: '#2D5A27',
+    fontWeight: '600',
   },
   description: {
     fontSize: 16,
