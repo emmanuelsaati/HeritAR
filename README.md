@@ -18,6 +18,23 @@ HeritAR is a mobile application that allows users to discover, scan, and experie
 - **Heritage Profiles**: Detailed pages with historical background and timeline
 - **Offline Mode**: Ability to download heritage content for offline viewing
 
+### New Features
+- **Heritage Quiz**: Interactive quiz system with 10 questions about Sierra Leone's heritage
+  - Multiple choice questions with explanations
+  - Score tracking and achievement unlocking
+  - Randomized question selection for replayability
+- **Favorites System**: Save and manage your favorite heritage sites
+  - Add/remove sites from favorites
+  - Quick access to saved sites
+- **Achievements & Gamification**: Track your exploration progress
+  - 6 achievements to unlock
+  - Progress tracking for visited sites
+  - Badge system for engagement
+- **Photo Gallery**: View heritage site images in a dedicated gallery
+  - Grid layout with image previews
+  - Full-screen image viewer
+  - Prepared for community photo contributions
+
 ## Tech Stack
 
 - **React Native** - Mobile framework
@@ -60,15 +77,22 @@ npm run web
 ```
 heritar/
 ├── src/
+│   ├── context/
+│   │   └── AppContext.tsx        # Global state management (favorites, achievements)
 │   ├── data/
 │   │   ├── heritageSites.ts      # Heritage site data
-│   │   └── animatedPortraitData.ts # Animated portrait configurations
+│   │   ├── animatedPortraitData.ts # Animated portrait configurations
+│   │   └── quizData.ts           # Quiz questions and answers
 │   ├── screens/
 │   │   ├── HomeScreen.tsx        # Main landing screen
 │   │   ├── AnimatedPortraitScreen.tsx # Animated portrait AR feature
 │   │   ├── LandmarkDiscoveryScreen.tsx # Heritage discovery
 │   │   ├── ARScanScreen.tsx      # Camera-based AR scanning
-│   │   └── HeritageProfileScreen.tsx # Detailed heritage information
+│   │   ├── HeritageProfileScreen.tsx # Detailed heritage information
+│   │   ├── FavoritesScreen.tsx   # Saved heritage sites
+│   │   ├── QuizScreen.tsx        # Interactive heritage quiz
+│   │   ├── AchievementsScreen.tsx # Progress tracking and badges
+│   │   └── PhotoGalleryScreen.tsx # Photo viewing gallery
 │   └── types/
 │       └── index.ts              # TypeScript type definitions
 ├── App.tsx                       # Main app component and navigation

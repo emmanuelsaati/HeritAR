@@ -12,6 +12,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { StackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import { getHeritageSiteById } from '../data/heritageSites';
+import { useApp } from '../context/AppContext';
 
 type ARScanScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ARScan'>;
 
@@ -29,6 +30,7 @@ const ARScanScreen: React.FC<Props> = ({ route, navigation }) => {
   const [scanProgress, setScanProgress] = useState(0);
   const [showOverlay, setShowOverlay] = useState(false);
   const pulseAnim = new Animated.Value(0);
+  const { unlockAchievement } = useApp();
 
   const site = getHeritageSiteById(siteId);
 
@@ -36,6 +38,7 @@ const ARScanScreen: React.FC<Props> = ({ route, navigation }) => {
     if (site?.arAvailable) {
       startScanAnimation();
       startPulseAnimation();
+      unlockAchievement('ar_explorer');
     }
   }, [site]);
 

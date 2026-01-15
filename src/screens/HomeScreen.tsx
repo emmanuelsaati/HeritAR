@@ -83,6 +83,45 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
               Learn detailed history and cultural significance
             </Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.featureCard}
+            onPress={() => navigation.navigate('Quiz')}
+          >
+            <View style={styles.featureIcon}>
+              <Text style={styles.featureIconText}>🧠</Text>
+            </View>
+            <Text style={styles.featureTitle}>Heritage Quiz</Text>
+            <Text style={styles.featureDescription}>
+              Test your knowledge of Sierra Leone's heritage
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.featureCard}
+            onPress={() => navigation.navigate('Favorites')}
+          >
+            <View style={styles.featureIcon}>
+              <Text style={styles.featureIconText}>❤️</Text>
+            </View>
+            <Text style={styles.featureTitle}>My Favorites</Text>
+            <Text style={styles.featureDescription}>
+              View your saved heritage sites
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.featureCard}
+            onPress={() => navigation.navigate('Achievements')}
+          >
+            <View style={styles.featureIcon}>
+              <Text style={styles.featureIconText}>🏆</Text>
+            </View>
+            <Text style={styles.featureTitle}>Achievements</Text>
+            <Text style={styles.featureDescription}>
+              Track your exploration progress and badges
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.aboutContainer}>
